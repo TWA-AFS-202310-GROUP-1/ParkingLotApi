@@ -24,5 +24,10 @@ namespace ParkingLotApi.repositories
         {
             return await parkingLotCollection.Find(x => true).ToListAsync();
         }
+        public async Task DeleteParkingLot(string id)
+        {
+            await parkingLotCollection.DeleteOneAsync(x => x.Id == id);
+            return;
+        }
     }
 }

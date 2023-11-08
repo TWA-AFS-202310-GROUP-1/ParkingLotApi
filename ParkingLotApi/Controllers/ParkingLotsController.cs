@@ -30,9 +30,15 @@ namespace ParkingLotApi.Controllers
             return StatusCode(StatusCodes.Status200OK, await parkingLotsService.GetAllAsync());
         }
         [HttpGet("{page}")]
-        public async Task<ActionResult<List<ParkingLot>>> GetParkingLotsAsync(int page)
+        public async Task<ActionResult<List<ParkingLot>>> GetParkingLotsAsync([FromRoute] int page)
         {
             return StatusCode(StatusCodes.Status200OK, await parkingLotsService.GetOnePageAsync(page));
+        }
+        [HttpDelete]
+        public async Task<StatusCodeResult> DeleteParkingLotAsync([FromBody] string id)
+        {
+            await parkingLotsService.DeleteParkingLot(id);
+            return StatusCode(StatusCodes.Status204NoContent);
         }
     }
 }
