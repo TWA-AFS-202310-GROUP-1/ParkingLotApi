@@ -21,13 +21,14 @@ namespace ParkingLotApiTest.Controllers
         [Fact]
         public async Task Should_return_400_when_create_parking_lot_given_capacity_less_than_10()
         {
+            HttpClient httpClient = GetClient();
             ParkingLotDto parkingLotDtoWithCapacityLessThan10 = new ParkingLotDto()
             {
                 Name = "best park",
                 Capacity = 9,
                 Location = "TS Building A"
             };
-            HttpClient httpClient = GetClient();
+
 
             HttpResponseMessage response = await httpClient.PostAsJsonAsync("/ParkingLots", parkingLotDtoWithCapacityLessThan10);
             
