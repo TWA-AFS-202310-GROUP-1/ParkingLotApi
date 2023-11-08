@@ -8,5 +8,7 @@ namespace ParkingLotApi.repositories
         public Task<ParkingLot> CreateParkingLot(ParkingLot parkingLot);
         public Task<List<ParkingLot>> GetAllParkingLots();
         public Task DeleteParkingLot(string id);
+        public Task<ParkingLot> GetParkingLot(string id);
+        public Task<ParkingLot> ChangeCapacity(string id, int capacity);
     }
 }
