@@ -22,5 +22,10 @@ namespace ParkingLotApi.Services
             }
             return await parkingLotsReposity.CreateParkingLot(parkingLotDto.ToEntity());
         }
+
+        public async Task<bool> RemoveAsync(string id)
+        {
+            return await parkingLotsReposity.RemoveAsync(id);
+        }
     }
 }
