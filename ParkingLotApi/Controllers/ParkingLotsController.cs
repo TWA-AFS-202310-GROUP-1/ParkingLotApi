@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ParkingLotApi.Dtos;
+using ParkingLotApi.Exceptions;
 using ParkingLotApi.Services;
 using System.Runtime.CompilerServices;
 
@@ -23,7 +24,7 @@ namespace ParkingLotApi.Controllers
             {
                 return StatusCode(StatusCodes.Status201Created, await parkingLotsService.AddAsync(parkingLot));
             }
-            catch (ArgumentException ex)
+            catch (InvalidCapacityException ex)
             {
                 return BadRequest();
             }
