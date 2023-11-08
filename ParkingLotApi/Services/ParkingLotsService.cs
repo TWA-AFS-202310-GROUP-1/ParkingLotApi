@@ -1,4 +1,5 @@
-﻿using ParkingLotApi.Dtos;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using ParkingLotApi.Dtos;
 using ParkingLotApi.Exceptions;
 using ParkingLotApi.Models;
 using ParkingLotApi.Repositories;
@@ -20,6 +21,11 @@ namespace ParkingLotApi.Services
                 throw new InvalidCapacityException();
             }
             return await _parkingLotsRepository.CreateParkingLot(parkingLotDto.ToEntity());
+        }
+        public async Task DeleteParkingLot(string Id)
+        {
+            ParkingLot parkingLot = await this._parkingLotsRepository.GetByNameAsync(Id) ?? throw new InvalidIdException("Delete ID invalid");
+            await this._parkingLotsRepository.DeleteByIdAsync(parkingLot.Name);
         }
     }
 }
