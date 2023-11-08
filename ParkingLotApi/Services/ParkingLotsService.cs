@@ -1,8 +1,10 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using ParkingLotApi.Dtos;
 using ParkingLotApi.Exceptions;
 using ParkingLotApi.Model;
 using ParkingLotApi.Repositories;
+using System.Text.RegularExpressions;
 
 namespace ParkingLotApi.Services
 {
@@ -24,7 +26,33 @@ namespace ParkingLotApi.Services
 
         public async Task<long> DeleteAsync(string iD)
         {
-            return await parkingLotsRepository.DeleteParkingLot(iD);
+            if (!ObjectId.TryParse(iD, out _))
+            {
+                throw new InValidIdException();
+            }
+            long deleteNo = await parkingLotsRepository.DeleteParkingLot(iD);
+            if (deleteNo <= 0)
+            {
+                throw new ParkingNotFoundException();
+            }
+            return deleteNo;
+        }
+
+        public async Task<List<ParkingLot>> GetByPage(int? pageIndex)
+        {
+            List<ParkingLot> parkingLots = await parkingLotsRepository.GetAllAsync();
+            if (pageIndex == null)
+            {
+                return parkingLots;
+            }
+            else if (pageIndex <= 0 || (pageIndex > (((int)pageIndex / 15 + 1))))
+            {
+                throw new PageOutOfIndexException();
+            }
+            else
+            {
+                return parkingLots;
+            }
         }
 
         public async Task<List<ParkingLot>> GetAllAsync()
@@ -34,16 +62,34 @@ namespace ParkingLotApi.Services
 
         public async Task<ParkingLot?> GetParkingLotByIdAsync(string id)
         {
-            return await parkingLotsRepository.GetByIdAsync(id);
+            if (!ObjectId.TryParse(id, out _))
+            {
+                throw new InValidIdException();
+            }
+            var parkingLot = await parkingLotsRepository.GetByIdAsync(id);
+            if (parkingLot == null)
+            {
+                throw new ParkingNotFoundException();
+            }
+            return parkingLot;
         }
 
         internal async Task<ParkingLot?> UpdateCapacityAsync(string Id, int capacity)
         {
+            if (!ObjectId.TryParse(Id, out _))
+            {
+                throw new InValidIdException();
+            }
             if (capacity < 10)
             {
                 throw new InValidCapacityException();
             }
-            return await parkingLotsRepository.UpdateCapacityAsync(Id, capacity);
+            var parkingLot = await parkingLotsRepository.UpdateCapacityAsync(Id, capacity);
+            if (parkingLot == null)
+            {
+                throw new ParkingNotFoundException();
+            }
+            return parkingLot;
         }
     }
 }

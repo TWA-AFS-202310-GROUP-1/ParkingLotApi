@@ -4,7 +4,7 @@ using ParkingLotApi.Exceptions;
 
 namespace ParkingLotApi.Filters
 {
-    public class InvalidCapacityExceptionFilter : IActionFilter, IOrderedFilter
+    public class ExceptionFilter : IActionFilter, IOrderedFilter
     {
         int IOrderedFilter.Order => int.MaxValue - 10;
         public int Order => throw new NotImplementedException();
@@ -12,6 +12,21 @@ namespace ParkingLotApi.Filters
         public void OnActionExecuted(ActionExecutedContext context)
         {
             if(context.Exception is InValidCapacityException inValidCapacityException)
+            {
+                context.Result = new BadRequestResult();
+                context.ExceptionHandled = true;
+            }
+            else if(context.Exception is InValidIdException inValidIdException)
+            {
+                context.Result = new BadRequestResult();
+                context.ExceptionHandled = true;
+            }
+            else if(context.Exception is ParkingNotFoundException parkingNotFoundException)
+            {
+                context.Result = new NotFoundResult();
+                context.ExceptionHandled = true;
+            }
+            else if(context.Exception is PageOutOfIndexException pageOutOfIndexException)
             {
                 context.Result = new BadRequestResult();
                 context.ExceptionHandled = true;

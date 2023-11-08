@@ -3,6 +3,7 @@ using ParkingLotApi.Dtos;
 using ParkingLotApi.Exceptions;
 using ParkingLotApi.Model;
 using ParkingLotApi.Services;
+using System.Text.RegularExpressions;
 
 namespace ParkingLotApi.Controllers
 {
@@ -26,56 +27,25 @@ namespace ParkingLotApi.Controllers
         [HttpDelete("{Id}")]
         public async Task<ActionResult> DeleteParkingLotAsync(string Id)
         {
-            long deleteNo = await _parkingLotsService.DeleteAsync(Id);
-            if (deleteNo > 0)
-            {
-                return NoContent();
-            }
-            else
-            {
-                return NotFound();
-            }
+            return StatusCode(StatusCodes.Status204NoContent, await _parkingLotsService.DeleteAsync(Id));
         }
 
         [HttpGet]
         public async Task<ActionResult<List<ParkingLot>>> GetParkingLotsByPageAsync([FromQuery] int? pageIndex)
         {
-            List<ParkingLot> parkingLots = await _parkingLotsService.GetAllAsync();
-            if (pageIndex == null)
-            {
-                return Ok(parkingLots);
-            }
-            if (pageIndex < 0 || (pageIndex > (((int)pageIndex / 15 + 1))))
-            {
-                return BadRequest();
-            }
-            else
-            {
-                List<ParkingLot> partialParkingLots = parkingLots.Skip(((int)pageIndex - 1) * 15).Take(15).ToList();
-                return Ok(partialParkingLots);
-            }
+            return StatusCode(StatusCodes.Status200OK, await _parkingLotsService.GetByPage(pageIndex));
         }
 
         [HttpGet("{Id}")]
         public async Task<ActionResult<ParkingLot>> GetByIdAsync(string Id)
         {
-            var parkingLot = await _parkingLotsService.GetParkingLotByIdAsync(Id);
-            if (parkingLot == null)
-            {
-                return NotFound();
-            }
-            return Ok(parkingLot);
+            return StatusCode(StatusCodes.Status200OK, await _parkingLotsService.GetParkingLotByIdAsync(Id));
         }
 
         [HttpPut("{Id}")]
         public async Task<ActionResult<ParkingLot>> UpdateCapacityAsync(string Id, int capacity)
         {
-            var parkingLot = await _parkingLotsService.UpdateCapacityAsync(Id, capacity);
-            if (parkingLot == null)
-            {
-                return NotFound();
-            }
-            return Ok(parkingLot);
+            return StatusCode(StatusCodes.Status200OK, await _parkingLotsService.UpdateCapacityAsync(Id, capacity));
         }
     }
 }
