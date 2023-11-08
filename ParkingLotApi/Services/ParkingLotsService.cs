@@ -27,5 +27,11 @@ namespace ParkingLotApi.Services
             ParkingLot parkingLot = await this._parkingLotsRepository.GetByNameAsync(Id) ?? throw new InvalidIdException("Delete ID invalid");
             await this._parkingLotsRepository.DeleteByIdAsync(parkingLot.Name);
         }
+
+        public async Task<List<ParkingLot>> GetAllAsync(int pageIndex)
+        {
+            var parkingLotList = await _parkingLotsRepository.GetAllParkingLots();
+            return parkingLotList.Skip((int)((pageIndex - 1) * 10)).Take(10).ToList();
+        }
     }
 }
