@@ -52,7 +52,7 @@ namespace ParkingLotApiTest.Controller
             HttpResponseMessage response = await httpClient.PostAsJsonAsync("/ParkingLots", requestParkingLot);
 
             //then
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
     }
 }
