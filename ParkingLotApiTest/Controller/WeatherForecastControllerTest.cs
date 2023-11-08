@@ -19,7 +19,7 @@ namespace ParkingLotApiTest.Controller
         {
             // Given & When
             HttpClient httpClient = GetClient();
-            HttpResponseMessage responseMessage = await httpClient.GetAsync("/WeatherForecast");
+            HttpResponseMessage responseMessage = await httpClient.GetAsync("/api/WeatherForecast");
 
             // Then
             Assert.Equal(HttpStatusCode.OK, responseMessage.StatusCode);
