@@ -9,6 +9,7 @@ namespace ParkingLotApi.Repositories
         public Task<List<ParkingLot>> GetAllAsync();
         public Task<ParkingLot> GetByIdAsync(string id);
         public Task DeleteByIdAsync(string Id);
+        public Task<ParkingLot> UpdateAsync(string id, ParkingLot parkingLot);
 
     }
 }

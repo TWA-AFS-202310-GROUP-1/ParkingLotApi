@@ -4,13 +4,13 @@ using ParkingLotApi.Exceptions;
 
 namespace ParkingLotApi.Filters
 {
-    public class InvalidIdExceptionFilter : IActionFilter, IOrderedFilter
+    public class ParkingLotNotFoundExceptionFilter : IActionFilter, IOrderedFilter
     {
         int IOrderedFilter.Order => int.MaxValue - 10;
 
         void IActionFilter.OnActionExecuted(ActionExecutedContext context)
         {
-            if (context.Exception is InvalidIdException invalidIdException)
+            if (context.Exception is ParkingLotNotFoundException parkingLotNotFoundException)
             {
                 context.Result = new NotFoundResult();
                 context.ExceptionHandled = true;

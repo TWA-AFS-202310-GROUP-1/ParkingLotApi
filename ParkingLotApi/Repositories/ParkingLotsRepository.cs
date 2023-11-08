@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using ParkingLotApi.Exceptions;
 using ParkingLotApi.Models;
 using System.Xml.Linq;
 
@@ -37,6 +38,11 @@ namespace ParkingLotApi.Repositories
         public async Task DeleteByIdAsync(string Id)
         {
             await _parkingLotsCollection.DeleteOneAsync(parkingLot => parkingLot.Id == Id);
+        }
+        public async Task<ParkingLot> UpdateAsync(string id, ParkingLot parkingLot)
+        {
+            await _parkingLotsCollection.ReplaceOneAsync(parkingLot => parkingLot.Id == id, parkingLot);
+            return parkingLot;
         }
 
     }
