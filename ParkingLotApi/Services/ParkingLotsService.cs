@@ -1,4 +1,5 @@
-﻿using ParkingLotApi.Dtos;
+﻿using Microsoft.AspNetCore.Mvc;
+using ParkingLotApi.Dtos;
 using ParkingLotApi.Exceptions;
 using ParkingLotApi.Models;
 using ParkingLotApi.Repositories;
@@ -31,6 +32,12 @@ namespace ParkingLotApi.Services
                 throw new IdNotFoundException("Delete ID does not exist");
             }
             return true;
+        }
+
+        public async Task<List<ParkingLot>> GetAllAsync(int pageIndex)
+        {
+            var parkingLotList = await parkingLotsRepository.GetAllParkingLot();
+            return parkingLotList.Skip((int)((pageIndex - 1) * 15)).Take(15).ToList();
         }
     }
 }

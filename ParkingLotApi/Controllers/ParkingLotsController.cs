@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 using ParkingLotApi.Dtos;
 using ParkingLotApi.Exceptions;
 using ParkingLotApi.Models;
@@ -29,5 +30,12 @@ namespace ParkingLotApi.Controllers
             await parkingLotsService.RemoveAsync(id);
             return NoContent();
         }
+
+        [HttpGet]
+        public async Task<ActionResult<List<ParkingLot>>> GetPage([FromQuery] int pageIndex)
+        {
+            return Ok(await parkingLotsService.GetAllAsync(pageIndex));
+        }
+
     }
 }
