@@ -20,7 +20,7 @@ namespace ParkingLotApiTest.Controllers
         [Fact]
         public async Task Should_return_correct_when_get_weather_forecast()
         {
-            HttpClient httpClient = new HttpClient();
+            HttpClient httpClient = GetClient();
             HttpResponseMessage response = await httpClient.GetAsync("/WeatherForecast");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
