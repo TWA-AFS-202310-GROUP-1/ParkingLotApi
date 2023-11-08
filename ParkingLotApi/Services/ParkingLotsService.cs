@@ -30,8 +30,17 @@ namespace ParkingLotApi.Services
 
         public async Task<List<ParkingLot>> GetAllAsync(int pageIndex)
         {
-            var parkingLotList = await _parkingLotsRepository.GetAllParkingLots();
+            var parkingLotList = await _parkingLotsRepository.GetAllAsync();
             return parkingLotList.Skip((int)((pageIndex - 1) * 10)).Take(10).ToList();
+        }
+        public async Task<ParkingLot> GetAsync(string id)
+        {
+            var parkingLot = await _parkingLotsRepository.GetByIdAsync(id);
+            if (parkingLot == null)
+            {
+                throw new InvalidIdException("404 Id");
+            }
+            return parkingLot;
         }
     }
 }

@@ -25,14 +25,18 @@ namespace ParkingLotApi.Repositories
             ParkingLot parkingLot = await _parkingLotsCollection.Find(parkingLot => parkingLot.Name == name).FirstOrDefaultAsync();
             return parkingLot;
         }
-        public async Task<List<ParkingLot>> GetAllParkingLots()
+        public async Task<List<ParkingLot>> GetAllAsync()
         {
             return await _parkingLotsCollection.Find(_ => true).ToListAsync();
+        }
+        public async Task<ParkingLot> GetByIdAsync(string id)
+        {
+            return await _parkingLotsCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task DeleteByIdAsync(string Id)
         {
-            await _parkingLotsCollection.DeleteOneAsync(parkingLot => parkingLot.Name == Id);
+            await _parkingLotsCollection.DeleteOneAsync(parkingLot => parkingLot.Id == Id);
         }
 
     }
