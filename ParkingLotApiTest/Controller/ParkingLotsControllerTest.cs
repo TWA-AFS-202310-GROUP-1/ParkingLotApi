@@ -25,7 +25,7 @@ namespace ParkingLotApiTest.Controller
             ParkingLotDto parkingLotDtoWithCapacityLessThan10 = new ParkingLotDto()
             { 
                 Name = "Car1",
-                Capactiy = 9,
+                Capacity = 9,
                 Location = "Building1"
             };
             HttpResponseMessage response = await client.PostAsJsonAsync("/ParkingLots", parkingLotDtoWithCapacityLessThan10);
