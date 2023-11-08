@@ -7,6 +7,7 @@ namespace ParkingLotApi.Repositories
     public interface IParkinglotRepository
     {
         public Task<Parkinglot> CreateParkinglot(Parkinglot parkinglot);
+        Task DeleteById(string id);
         Task<List<Parkinglot>> GetParkinglots();
     }
     public class ParkinglotRepository : IParkinglotRepository
@@ -32,6 +33,11 @@ namespace ParkingLotApi.Repositories
         public async Task<List<Parkinglot>> GetParkinglots()
         {
             return await _parkinglotCollection.Find(_ =>true).ToListAsync();
+        }
+
+        public async Task DeleteById(string id)
+        {
+            await _parkinglotCollection.DeleteOneAsync(item =>item.Id == id);
         }
     }
 }
