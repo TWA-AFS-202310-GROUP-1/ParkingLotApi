@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using ParkingLotApi.Dtos;
 using ParkingLotApi.Models;
 
 namespace ParkingLotApi.Repositories
@@ -7,6 +8,7 @@ namespace ParkingLotApi.Repositories
     public class ParkingLotsReposity : IParkingLotsReposity
     {
         private readonly IMongoCollection<ParkingLot> _parkingLotCollection;
+
         public ParkingLotsReposity(IOptions<ParkingLotDatabaseSettings> parkingLotDatabaseSettings)
         {
             var mongoClient = new MongoClient(parkingLotDatabaseSettings.Value.ConnectionString);
@@ -29,6 +31,23 @@ namespace ParkingLotApi.Repositories
             }
             await _parkingLotCollection.DeleteOneAsync(x => x.Id == id);
             return true;
+        }
+
+        public async Task<List<ParkingLotDto>> GetPagedData(int skip, int pageSize)
+        {
+            var filter = Builders<ParkingLot>.Filter.Empty;
+            // 使用 MongoDB 查询来获取分页数据
+            var result = await _parkingLotCollection.Find(filter)
+                                         .Skip(skip)
+                                         .Limit(pageSize)
+                                         .ToListAsync();
+            var dtoResult = result.Select(parkingLot => new ParkingLotDto
+            {
+                Name = parkingLot.Name,
+                Capacity = parkingLot.Capacity,
+                Location = parkingLot.Location
+            }).ToList();
+            return dtoResult;
         }
     }
 }

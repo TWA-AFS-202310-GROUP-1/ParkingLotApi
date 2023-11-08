@@ -31,5 +31,16 @@ namespace ParkingLotApi.Controllers
             }
             return NoContent();
         }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(ParkingLotDto), 200)]
+        [ProducesResponseType(400)]
+
+        public async Task<ActionResult<List<ParkingLotDto>>> GetAll([FromQuery] int page = 1)
+        {
+            int pageSize = 15;
+            var result = await _parkingLotsService.GetAsync(page,pageSize);
+            return Ok(result);
+        }
     }
 }

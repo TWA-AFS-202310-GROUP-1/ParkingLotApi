@@ -1,4 +1,5 @@
-﻿using ParkingLotApi.Models;
+﻿using ParkingLotApi.Dtos;
+using ParkingLotApi.Models;
 
 namespace ParkingLotApi.Repositories
 {
@@ -6,7 +7,7 @@ namespace ParkingLotApi.Repositories
     {
         public Task<ParkingLot> CreateParkingLot(ParkingLot parkingLot);
         public Task<bool> RemoveAsync(string id);
-
+        public Task<List<ParkingLotDto>> GetPagedData(int skip, int pageSize);
 
     }
 }

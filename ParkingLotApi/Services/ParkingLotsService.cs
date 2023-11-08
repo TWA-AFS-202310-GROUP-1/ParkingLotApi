@@ -27,5 +27,11 @@ namespace ParkingLotApi.Services
         {
             return await parkingLotsReposity.RemoveAsync(id);
         }
+
+        public async Task<List<ParkingLotDto>> GetAsync(int page, int pageSize)
+        {
+            int skip = (page - 1) * pageSize;
+            return await parkingLotsReposity.GetPagedData(skip, pageSize);
+        }
     }
 }
