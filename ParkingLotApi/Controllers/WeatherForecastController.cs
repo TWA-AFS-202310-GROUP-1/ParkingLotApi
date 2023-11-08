@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+/*using Microsoft.AspNetCore.Mvc;
 
 namespace ParkingLotApi.Controllers
 {
@@ -30,4 +30,4 @@ namespace ParkingLotApi.Controllers
             .ToArray();
         }
     }
-}
+}*/
