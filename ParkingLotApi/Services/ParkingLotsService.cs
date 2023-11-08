@@ -39,5 +39,15 @@ namespace ParkingLotApi.Services
             var parkingLotList = await parkingLotsRepository.GetAllParkingLot();
             return parkingLotList.Skip((int)((pageIndex - 1) * 15)).Take(15).ToList();
         }
+
+        public async Task<ParkingLot> GetAsync(string id)
+        {
+            var parkingLot = await parkingLotsRepository.GetParkingLotById(id);
+            if(parkingLot == null)
+            {
+                throw new IdNotFoundException("Get ID does not exist");
+            }
+            return parkingLot;
+        }
     }
 }
