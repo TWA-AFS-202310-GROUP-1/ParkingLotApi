@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using ParkingLotApi.Model;
+using ParkingLotApi.Services;
 
 namespace ParkingLotApi.Controllers
 {
@@ -14,9 +16,9 @@ namespace ParkingLotApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Parkinglot> Create(ParkinglotRequest parkinglotRequest)
+        public async Task<ActionResult<Parkinglot>> Create(ParkinglotRequest parkinglotRequest)
         {
-            return StatusCode(StatusCodes.Status201Created, parkinglotService.CreateParkinglot(parkinglotRequest));
+            return StatusCode(StatusCodes.Status201Created, await parkinglotService.CreateParkinglot(parkinglotRequest));
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
-using ParkingLotApi;
+using ParkingLotApi.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +23,18 @@ namespace ParkingLotApiTest.Controllers
             ParkinglotRequest parkinglotRequest = new ParkinglotRequest() { Name = "Dufu", Capacity = 9, Location = "LA"};
             HttpResponseMessage response = await client.PostAsJsonAsync("/parkinglot", parkinglotRequest);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Should_return_correct_Parkinglot_object_when_create_parkinglot_given_a_parkinglotRequest()
+        {
+            HttpClient client = GetClient();
+            ParkinglotRequest parkinglotRequest = new ParkinglotRequest() { Name = "Dufu", Capacity = 15, Location = "LA" };
+            HttpResponseMessage response = await client.PostAsJsonAsync("/parkinglot", parkinglotRequest);
+            var result = await response.Content.ReadFromJsonAsync<Parkinglot>();
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.NotNull(result.Id);
+            Assert.Equal(parkinglotRequest.Name, result.Name);
         }
     }
 }

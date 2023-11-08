@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
-using ParkingLotApi.Controllers;
+using ParkingLotApi.Repositories;
+using ParkingLotApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,10 +15,9 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-MongoClient mongoClient = new MongoClient("mongodb://localhost:27017");
-builder.Services.AddSingleton(mongoClient);
-builder.Services.AddScoped<IParkinglotRepository>(provider => new ParkinglotRepository(mongoClient));
+builder.Services.AddSingleton<IParkinglotRepository, ParkinglotRepository>();
 builder.Services.AddScoped<ParkringlotService>();
+builder.Services.Configure<ParkinglotDatabaseSettings>(builder.Configuration.GetSection("ParkinglotDatabase"));
 
 var app = builder.Build();
 
