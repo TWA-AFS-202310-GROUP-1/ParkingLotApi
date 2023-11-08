@@ -31,6 +31,10 @@ namespace ParkingLotApi.Services
         {
             return await _parkinglotRepository.GetParkinglots();
         }
+        public async Task<List<Parkinglot>> GetParkinglots(int page, int pageSize)
+        {
+            return await _parkinglotRepository.GetParkinglots(page, pageSize);
+        }
 
         public async Task DeleteParkinglot(string id)
         {

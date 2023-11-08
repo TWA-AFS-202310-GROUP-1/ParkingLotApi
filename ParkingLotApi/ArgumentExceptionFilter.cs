@@ -7,11 +7,12 @@ public class ArgumentExceptionFilter : IActionFilter, IOrderedFilter
 
     public void OnActionExecuted(ActionExecutedContext context)
     {
-       if(context.Exception is ArgumentException)
+       if(context.Exception is Exception)
         {
             context.Result = new BadRequestResult();
             context.ExceptionHandled = true;
         }
+
     }
 
     public void OnActionExecuting(ActionExecutingContext context)

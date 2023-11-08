@@ -9,6 +9,8 @@ namespace ParkingLotApi.Repositories
         public Task<Parkinglot> CreateParkinglot(Parkinglot parkinglot);
         Task DeleteById(string id);
         Task<List<Parkinglot>> GetParkinglots();
+        Task<List<Parkinglot>> GetParkinglots(int page, int pageSize);
+
     }
     public class ParkinglotRepository : IParkinglotRepository
     {
@@ -38,6 +40,13 @@ namespace ParkingLotApi.Repositories
         public async Task DeleteById(string id)
         {
             await _parkinglotCollection.DeleteOneAsync(item =>item.Id == id);
+        }
+
+        public async Task<List<Parkinglot>> GetParkinglots(int page, int pageSize)
+        {
+            var query = _parkinglotCollection.Find(_ => true);
+            var parkinglots = await query.Skip((page - 1) * pageSize).Limit(pageSize).ToListAsync();
+            return parkinglots;
         }
     }
 }
