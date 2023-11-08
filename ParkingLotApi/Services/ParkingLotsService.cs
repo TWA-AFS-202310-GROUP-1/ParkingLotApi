@@ -22,17 +22,14 @@ namespace ParkingLotApi.Services
             return await parkingLotsRepository.CreateParkingLots(parkingLotDto.ToEntity());
         }
 
-        internal async Task<long> DeleteAsync(string iD)
+        public async Task<long> DeleteAsync(string iD)
         {
             return await parkingLotsRepository.DeleteParkingLot(iD);
+        }
 
-            /*ParkingLot? parkingLot = await parkingLotsRepository.GetByIdAsync(iD);
-            if (parkingLot == null)
-            {
-                return null;
-            }
-            await parkingLotsRepository.DeleteParkingLot(iD);
-            return parkingLot;*/
+        public async Task<List<ParkingLot>> GetAllAsync()
+        {
+            return await parkingLotsRepository.GetAllAsync();
         }
     }
 }

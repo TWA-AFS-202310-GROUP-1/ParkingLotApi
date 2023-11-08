@@ -35,7 +35,25 @@ namespace ParkingLotApi.Controllers
             {
                 return NotFound();
             }
-            
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<ParkingLot>>> GetParkingLotsByPage([FromQuery] int? pageIndex)
+        {
+            List<ParkingLot> parkingLots = await _parkingLotsService.GetAllAsync();
+            if (pageIndex == null)
+            {
+                return Ok(parkingLots);
+            }
+            if (pageIndex < 0 || (pageIndex > (((int)pageIndex / 15 + 1))))
+            {
+                return BadRequest();
+            }         
+            else
+            {
+                List<ParkingLot> partialParkingLots = parkingLots.Skip(((int)pageIndex -1)*15).Take(15).ToList();
+                return Ok(partialParkingLots);
+            }
         }
     }
 }
