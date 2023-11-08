@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ParkingLotApi.Dtos;
 using ParkingLotApi.Exceptions;
+using ParkingLotApi.Models;
 using ParkingLotApi.Services;
 
 namespace ParkingLotApi.Controllers
@@ -17,16 +18,16 @@ namespace ParkingLotApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ParkingLotDto>> CreateParkingLotAsync([FromBody] ParkingLotDto parkingLotDto)
+        public async Task<ActionResult<ParkingLot>> CreateParkingLotAsync([FromBody] ParkingLotDto parkingLotDto)
         {
-            try
-            {
-                return StatusCode(StatusCodes.Status201Created, await parkingLotsService.CreateAsync(parkingLotDto));
-            }
-            catch(InvalidCapacityException ex)
-            {
-                return BadRequest("Capacity should larger than 10");
-            }
+            //try
+            //{
+            return StatusCode(StatusCodes.Status201Created, await parkingLotsService.CreateAsync(parkingLotDto));
+            //}
+            //catch(InvalidCapacityException ex)
+            //{
+                //return BadRequest("Capacity should larger than 10");
+            //}
         }
     }
 }
