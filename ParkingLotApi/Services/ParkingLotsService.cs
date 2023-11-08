@@ -49,5 +49,20 @@ namespace ParkingLotApi.Services
             }
             return parkingLot;
         }
+
+        public async Task<ParkingLot> UpdateCapacityAsync(string id, UpdateParkingLotDto updateParkingLotDto)
+        {
+            if (updateParkingLotDto.Capacity < 10)
+            {
+                throw new InvalidCapacityException("Capacity should larger than 10");
+            }
+
+            var parkingLot = await parkingLotsRepository.UpdateParkingLotCapacity(id, updateParkingLotDto.Capacity);
+            if (parkingLot == null)
+            {
+                throw new IdNotFoundException("Get ID does not exist");
+            }
+            return parkingLot;
+        }
     }
 }
