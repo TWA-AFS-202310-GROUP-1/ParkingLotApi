@@ -21,5 +21,9 @@ namespace ParkingLotApi.Services
             }
             return await parkingLotRepository.CreateParkingLot(parkingLotDto.ToEntity());
         }
+        public async Task<List<ParkingLot>> GetAllAsync()
+        {
+            return await parkingLotRepository.GetAllParkingLots();
+        }
     }
 }

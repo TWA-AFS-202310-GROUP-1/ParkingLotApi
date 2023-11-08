@@ -19,5 +19,10 @@ namespace ParkingLotApi.repositories
             await parkingLotCollection.InsertOneAsync(parkingLot);
             return await parkingLotCollection.Find(a => a.Name == parkingLot.Name).FirstAsync();
         }
+
+        public async Task<List<ParkingLot>> GetAllParkingLots()
+        {
+            return await parkingLotCollection.Find(x => true).ToListAsync();
+        }
     }
 }
