@@ -45,5 +45,10 @@ namespace ParkingLotApi.Services
         {
             return await _parkinglotRepository.GetById(id);
         }
+
+        public async Task UpdateParkinglot(string id, Parkinglot parkinglot)
+        {
+            await _parkinglotRepository.UpdateParkinglot(id, parkinglot);
+        }
     }
 }

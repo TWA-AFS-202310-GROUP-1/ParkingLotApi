@@ -46,5 +46,19 @@ namespace ParkingLotApi.Controllers
             return Ok(parkinglot);
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCapacity(string id, [FromBody] int newCapacity)
+        {
+                var parkinglot = await parkinglotService.GetParkinglotById(id);
+                if (parkinglot == null)
+                {
+                    return NotFound();
+                }
+                parkinglot.Capacity = newCapacity;
+                await parkinglotService.UpdateParkinglot(id, parkinglot);
+                return Ok();
+        }
+
+
     }
 }

@@ -11,6 +11,8 @@ namespace ParkingLotApi.Repositories
         Task<Parkinglot> GetById(string id);
         Task<List<Parkinglot>> GetParkinglots();
         Task<List<Parkinglot>> GetParkinglots(int page, int pageSize);
+        Task UpdateParkinglot(string id, Parkinglot parkinglot);
+
 
     }
     public class ParkinglotRepository : IParkinglotRepository
@@ -54,5 +56,11 @@ namespace ParkingLotApi.Repositories
         {
             return await _parkinglotCollection.Find(item => id == item.Id).FirstAsync();
         }
+
+        public async Task UpdateParkinglot(string id, Parkinglot parkinglot)
+        {
+            await _parkinglotCollection.ReplaceOneAsync(p => p.Id == id, parkinglot);
+        }
+
     }
 }
