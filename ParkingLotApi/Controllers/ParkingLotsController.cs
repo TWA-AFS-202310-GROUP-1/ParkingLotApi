@@ -23,10 +23,10 @@ namespace ParkingLotApi.Controllers
 
         }
 
-        [HttpDelete("{ID}")]
-        public async Task<ActionResult> DeleteParkingLotAsync(string ID)
+        [HttpDelete("{Id}")]
+        public async Task<ActionResult> DeleteParkingLotAsync(string Id)
         {
-            long deleteNo = await _parkingLotsService.DeleteAsync(ID);
+            long deleteNo = await _parkingLotsService.DeleteAsync(Id);
             if (deleteNo > 0)
             {
                 return NoContent();
@@ -60,6 +60,17 @@ namespace ParkingLotApi.Controllers
         public async Task<ActionResult<ParkingLot>> GetByIdAsync(string Id)
         {
             var parkingLot = await _parkingLotsService.GetParkingLotByIdAsync(Id);
+            if (parkingLot == null)
+            {
+                return NotFound();
+            }
+            return Ok(parkingLot);
+        }
+
+        [HttpPut("{Id}")]
+        public async Task<ActionResult<ParkingLot>> UpdateCapacityAsync(string Id, int capacity)
+        {
+            var parkingLot = await _parkingLotsService.UpdateCapacityAsync(Id, capacity);
             if (parkingLot == null)
             {
                 return NotFound();

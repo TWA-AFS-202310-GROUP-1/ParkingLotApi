@@ -36,5 +36,14 @@ namespace ParkingLotApi.Services
         {
             return await parkingLotsRepository.GetByIdAsync(id);
         }
+
+        internal async Task<ParkingLot?> UpdateCapacityAsync(string Id, int capacity)
+        {
+            if (capacity < 10)
+            {
+                throw new InValidCapacityException();
+            }
+            return await parkingLotsRepository.UpdateCapacityAsync(Id, capacity);
+        }
     }
 }
