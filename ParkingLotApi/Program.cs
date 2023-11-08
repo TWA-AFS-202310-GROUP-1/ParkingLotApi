@@ -11,6 +11,7 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<InvalidCapacityExceptionFilter>();
     options.Filters.Add<IdNotFoundExceptionFilter>();
+    options.Filters.Add<NameConflitedExceptionFilter>();
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

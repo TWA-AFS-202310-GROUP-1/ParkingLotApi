@@ -21,6 +21,11 @@ namespace ParkingLotApi.Services
             {
                 throw new InvalidCapacityException("Capacity should larger than 10");
             }
+            var parkingLotList = await parkingLotsRepository.GetAllParkingLot();
+            if(parkingLotList.Exists(_ => parkingLotDto.Name == _.Name))
+            {
+                throw new NameConflitedException("Name Already existed");
+            }
             return await parkingLotsRepository.CreateParkingLot(parkingLotDto.ToEntity());
         }
 
@@ -34,7 +39,7 @@ namespace ParkingLotApi.Services
             return true;
         }
 
-        public async Task<List<ParkingLot>> GetAllAsync(int pageIndex)
+        public async Task<List<ParkingLot>> GetPageAsync(int pageIndex)
         {
             var parkingLotList = await parkingLotsRepository.GetAllParkingLot();
             return parkingLotList.Skip((int)((pageIndex - 1) * 15)).Take(15).ToList();
