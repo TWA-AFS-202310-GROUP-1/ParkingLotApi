@@ -26,10 +26,10 @@ namespace ParkingLotApi.Services
         {
             return await parkingLotRepository.GetAllParkingLots();
         }
-        public async Task<List<ParkingLot>> GetOnePageAsync(int page)
+        public async Task<List<ParkingLot>> GetOnePageAsync(int? page)
         {
             List<ParkingLot> list = await GetAllAsync();
-            return list.GetRange((page - 1) * pageSize, pageSize);
+            return list.GetRange((int)((page - 1) * pageSize), pageSize);
         }
         public async Task DeleteParkingLot(string id)
         {
