@@ -33,5 +33,10 @@ namespace ParkingLotApi.Services
             int skip = (page - 1) * pageSize;
             return await parkingLotsReposity.GetPagedData(skip, pageSize);
         }
+
+        public async Task<ParkingLotDto> GetAsync(string id)
+        {
+            return await parkingLotsReposity.GetAsync(id);
+        }
     }
 }

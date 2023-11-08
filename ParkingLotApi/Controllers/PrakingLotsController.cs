@@ -42,5 +42,16 @@ namespace ParkingLotApi.Controllers
             var result = await _parkingLotsService.GetAsync(page,pageSize);
             return Ok(result);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ParkingLotDto>> GetAsync(string id)
+        {
+            var result = await _parkingLotsService.GetAsync(id);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+        }
     }
 }

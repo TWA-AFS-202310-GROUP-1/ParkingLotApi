@@ -36,7 +36,6 @@ namespace ParkingLotApi.Repositories
         public async Task<List<ParkingLotDto>> GetPagedData(int skip, int pageSize)
         {
             var filter = Builders<ParkingLot>.Filter.Empty;
-            // 使用 MongoDB 查询来获取分页数据
             var result = await _parkingLotCollection.Find(filter)
                                          .Skip(skip)
                                          .Limit(pageSize)
@@ -48,6 +47,23 @@ namespace ParkingLotApi.Repositories
                 Location = parkingLot.Location
             }).ToList();
             return dtoResult;
+        }
+
+        public async Task<ParkingLotDto?> GetAsync(string id)
+        {
+            var parkingLot = await _parkingLotCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            if (parkingLot is null)
+            {
+                return null;
+            }
+            var parkingLotDtos = new ParkingLotDto
+            {
+                Name = parkingLot.Name,
+                Capacity = parkingLot.Capacity,
+                Location = parkingLot.Location
+            };
+            return parkingLotDtos;
+
         }
     }
 }
