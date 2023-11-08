@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using ParkingLotApi.Dtos;
+using ParkingLotApi.Exceptions;
 using ParkingLotApi.Models;
 
 namespace ParkingLotApi.Repositories
@@ -63,6 +64,29 @@ namespace ParkingLotApi.Repositories
                 Location = parkingLot.Location
             };
             return parkingLotDtos;
+
+        }
+
+        public async Task ReplaceAsync(string id, ParkingLotCapacityDto parkingLotCapacityDto)
+        {
+            var parkinglotToBeUpdated = await _parkingLotCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+
+            var parkingLot = new ParkingLot
+            {
+                Id = id,
+                Name = parkinglotToBeUpdated.Name,
+                Location = parkinglotToBeUpdated.Location,
+                Capacity = parkingLotCapacityDto.Capacity,
+            };
+
+            if (parkingLotCapacityDto.Capacity < 10)
+            {
+                throw new InvalidCapacityException("error");
+            }
+            else
+            {
+                var result = await _parkingLotCollection.ReplaceOneAsync(x => x.Id == id, parkingLot);
+            }
 
         }
     }

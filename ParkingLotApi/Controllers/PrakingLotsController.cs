@@ -53,5 +53,19 @@ namespace ParkingLotApi.Controllers
             }
             return Ok(result);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ParkingLotDto>> PutAsync(string id, [FromBody] ParkingLotCapacityDto parkingLotCapacityDto)
+        {
+            var result = await _parkingLotsService.ReplaceAsync(id, parkingLotCapacityDto);
+
+            if (result is null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(result);
+        }
+
     }
 }

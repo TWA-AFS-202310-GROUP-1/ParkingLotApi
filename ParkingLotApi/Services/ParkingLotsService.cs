@@ -38,5 +38,26 @@ namespace ParkingLotApi.Services
         {
             return await parkingLotsReposity.GetAsync(id);
         }
+
+        public async Task<ParkingLotCapacityDto> ReplaceAsync(string id, ParkingLotCapacityDto parkingLotCapacityDto)
+        {
+            if (string.IsNullOrEmpty(id) || parkingLotCapacityDto is null)
+            {
+                return null;
+            }
+
+            var parkingLot = await parkingLotsReposity.GetAsync(id);
+
+            if (parkingLot is null)
+            {
+                return null;
+            }
+            else
+            {
+                await parkingLotsReposity.ReplaceAsync(id, parkingLotCapacityDto);
+            }
+
+            return parkingLotCapacityDto;
+        }
     }
 }

@@ -9,5 +9,6 @@ namespace ParkingLotApi.Repositories
         public Task<bool> RemoveAsync(string id);
         public Task<List<ParkingLotDto>> GetPagedData(int skip, int pageSize);
         public Task<ParkingLotDto?> GetAsync(string id);
+        public Task ReplaceAsync(string id, ParkingLotCapacityDto parkingLotCapacityDto);
     }
 }
