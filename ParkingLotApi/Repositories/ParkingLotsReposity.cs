@@ -79,14 +79,7 @@ namespace ParkingLotApi.Repositories
                 Capacity = parkingLotCapacityDto.Capacity,
             };
 
-            if (parkingLotCapacityDto.Capacity < 10)
-            {
-                throw new InvalidCapacityException("error");
-            }
-            else
-            {
-                var result = await _parkingLotCollection.ReplaceOneAsync(x => x.Id == id, parkingLot);
-            }
+ 
 
         }
     }

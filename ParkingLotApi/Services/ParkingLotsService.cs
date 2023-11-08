@@ -56,7 +56,10 @@ namespace ParkingLotApi.Services
             {
                 await parkingLotsReposity.ReplaceAsync(id, parkingLotCapacityDto);
             }
-
+            if (parkingLotCapacityDto.Capacity < 10)
+            {
+                throw new InvalidCapacityException("error");
+            }
             return parkingLotCapacityDto;
         }
     }
