@@ -16,11 +16,19 @@ namespace ParkingLotApi.Services
 
         public async Task<ParkingLot> AddAsync(ParkingLotDto parkingLotDto)
         {
-            if(parkingLotDto.Capacity<10)
+            if (parkingLotDto.Capacity < 10)
             {
                 throw new InvalidCapacityException();
             }
-            return await parkingLotRepository.CreateParkingLot(parkingLotDto.ToEntity());
+            ParkingLot result = await parkingLotRepository.CreateParkingLot(parkingLotDto.ToEntity());
+            if (result == null)
+            {
+                throw new InvalidCapacityException();
+            }
+            else
+            {
+                return result;
+            }
         }
         public async Task<List<ParkingLot>> GetAllAsync()
         {
@@ -42,7 +50,7 @@ namespace ParkingLotApi.Services
         }
         public async Task<ParkingLot> ChangeCapacityOfParkingLot(string id, int capacity)
         {
-            if(capacity<10)
+            if (capacity < 10)
             {
                 throw new InvalidCapacityException();
             }
