@@ -22,5 +22,15 @@ namespace ParkingLotApi.Services
             }
             return await parkingLotsRepository.CreateParkingLot(parkingLotDto.ToEntity());
         }
+
+        public async Task<bool> RemoveAsync(string id)
+        {
+            var isDelete = await parkingLotsRepository.RemoveParkingLot(id);
+            if (!isDelete)
+            {
+                throw new IdNotFoundException("Delete ID does not exist");
+            }
+            return true;
+        }
     }
 }
