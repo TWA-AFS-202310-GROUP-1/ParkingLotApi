@@ -23,5 +23,14 @@ namespace ParkingLotApiTest.Controllers
             HttpResponseMessage response = await httpClient.GetAsync("/WeatherForecast");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+
+        [Fact]
+        public async Task Should_return_correfctly_when_get_weather_forecast()
+        {
+            HttpClient httpClient = GetClient();
+            HttpResponseMessage response = await httpClient.GetAsync("/WeatherForecast");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
     }
 }
