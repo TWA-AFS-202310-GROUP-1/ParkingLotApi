@@ -7,6 +7,7 @@ namespace ParkingLotApi.Services
 {
     public class ParkingLotsService
     {
+        private int pageSize = 3;
         private IParkingLotRepository parkingLotRepository;
         public ParkingLotsService(IParkingLotRepository parkingLotRepository)
         {
@@ -24,6 +25,11 @@ namespace ParkingLotApi.Services
         public async Task<List<ParkingLot>> GetAllAsync()
         {
             return await parkingLotRepository.GetAllParkingLots();
+        }
+        public async Task<List<ParkingLot>> GetOnePageAsync(int page)
+        {
+            List<ParkingLot> list = await GetAllAsync();
+            return list.GetRange((page - 1) * pageSize, pageSize);
         }
     }
 }
