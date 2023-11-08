@@ -30,18 +30,27 @@ namespace ParkingLotApi.repositories
         {
             return await parkingLotCollection.Find(x => true).ToListAsync();
         }
-        public async Task DeleteParkingLot(string id)
+        public async Task<int> DeleteParkingLot(string id)
         {
-            await parkingLotCollection.DeleteOneAsync(x => x.Id == id);
-            return;
+            var result = await parkingLotCollection.DeleteOneAsync(x => x.Id == id);
+            return (int)result.DeletedCount;
         }
         public async Task<ParkingLot> GetParkingLot(string id)
         {
+            List<ParkingLot> temp = await parkingLotCollection.Find(x => x.Id == id).ToListAsync();
+            if (temp.Count == 0)
+            {
+                return null;
+            }
             return await parkingLotCollection.Find(a => a.Id==id).FirstAsync();
         }
         public async Task<ParkingLot> ChangeCapacity(string id, int capacity)
         {
-            ParkingLot parkingLot = await parkingLotCollection.Find(x => x.Id==id).FirstAsync();
+            ParkingLot parkingLot = await parkingLotCollection.Find(x => x.Id==id).FirstOrDefaultAsync();
+            if (parkingLot == null)
+            {
+                return null;
+            }
             parkingLot.Capacity = capacity;
             parkingLotCollection.ReplaceOne((x => x.Id == id), parkingLot);
             return parkingLot;

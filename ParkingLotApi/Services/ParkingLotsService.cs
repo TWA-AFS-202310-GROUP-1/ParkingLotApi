@@ -7,7 +7,7 @@ namespace ParkingLotApi.Services
 {
     public class ParkingLotsService
     {
-        private int pageSize = 3;
+        private int pageSize = 15;
         private IParkingLotRepository parkingLotRepository;
         public ParkingLotsService(IParkingLotRepository parkingLotRepository)
         {
@@ -23,7 +23,7 @@ namespace ParkingLotApi.Services
             ParkingLot result = await parkingLotRepository.CreateParkingLot(parkingLotDto.ToEntity());
             if (result == null)
             {
-                throw new InvalidCapacityException();
+                throw new RepeatedNameException();
             }
             else
             {
@@ -37,16 +37,37 @@ namespace ParkingLotApi.Services
         public async Task<List<ParkingLot>> GetOnePageAsync(int? page)
         {
             List<ParkingLot> list = await GetAllAsync();
-            return list.GetRange((int)((page - 1) * pageSize), pageSize);
+            int start = (int)((page - 1) * pageSize);
+            int length = pageSize;
+            if ((start + 1) > list.Count)
+            {
+                throw new Exception();
+            }
+            if ((start + length) > list.Count)
+            {
+                length = list.Count - start;
+            }
+            return list.GetRange(start, length);
         }
         public async Task DeleteParkingLot(string id)
         {
-            await parkingLotRepository.DeleteParkingLot(id);
-            return;
+            int result = await parkingLotRepository.DeleteParkingLot(id);
+            if (result == 0)
+            {
+                throw new InvalidIdException();
+            }
         }
         public async Task<ParkingLot> GetParkingLot(string id)
         {
-            return await parkingLotRepository.GetParkingLot(id);
+            ParkingLot result = await parkingLotRepository.GetParkingLot(id);
+            if (result == null)
+            {
+                throw new InvalidIdException();
+            }
+            else
+            {
+                return result;
+            }
         }
         public async Task<ParkingLot> ChangeCapacityOfParkingLot(string id, int capacity)
         {
@@ -54,7 +75,15 @@ namespace ParkingLotApi.Services
             {
                 throw new InvalidCapacityException();
             }
-            return await parkingLotRepository.ChangeCapacity(id, capacity);
+            ParkingLot result = await parkingLotRepository.ChangeCapacity(id, capacity);
+            if (result == null)
+            {
+                throw new InvalidIdException();
+            }
+            else
+            {
+                return result;
+            }
         }
     }
 }
