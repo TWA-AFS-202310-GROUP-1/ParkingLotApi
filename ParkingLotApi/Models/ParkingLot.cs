@@ -6,7 +6,7 @@ namespace ParkingLotApi.Models
     public class ParkingLot
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         public string? Id { get; set; }
         public string Name { get; set; }
         public int Capacity { get; set; }
