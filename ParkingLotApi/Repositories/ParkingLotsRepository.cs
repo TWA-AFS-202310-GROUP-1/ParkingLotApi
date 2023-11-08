@@ -31,9 +31,14 @@ namespace ParkingLotApi.Repositories
             return await _parkingLotCollection.Find(_ => true).ToListAsync();
         }
 
-        public async Task<ParkingLot> GetByIdAsync(string iD)
+        public async Task<ParkingLot?> GetByIdAsync(string iD)
         {
-            throw new NotImplementedException();
+            var parkingLot = await _parkingLotCollection.Find(x => x.Id == iD).FirstOrDefaultAsync();
+            if (parkingLot == null)
+            {
+                return null;
+            }
+            return parkingLot;
         }
     }
 }

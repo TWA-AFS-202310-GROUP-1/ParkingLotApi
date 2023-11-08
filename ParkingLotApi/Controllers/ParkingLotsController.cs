@@ -18,7 +18,7 @@ namespace ParkingLotApi.Controllers
 
         [HttpPost]
         public async Task<ActionResult<ParkingLot>> AddParkingLotAsync([FromBody] ParkingLotDto parkingLotDto)
-        {     
+        {
             return StatusCode(StatusCodes.Status201Created, await _parkingLotsService.AddAsync(parkingLotDto));
 
         }
@@ -38,7 +38,7 @@ namespace ParkingLotApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ParkingLot>>> GetParkingLotsByPage([FromQuery] int? pageIndex)
+        public async Task<ActionResult<List<ParkingLot>>> GetParkingLotsByPageAsync([FromQuery] int? pageIndex)
         {
             List<ParkingLot> parkingLots = await _parkingLotsService.GetAllAsync();
             if (pageIndex == null)
@@ -48,12 +48,23 @@ namespace ParkingLotApi.Controllers
             if (pageIndex < 0 || (pageIndex > (((int)pageIndex / 15 + 1))))
             {
                 return BadRequest();
-            }         
+            }
             else
             {
-                List<ParkingLot> partialParkingLots = parkingLots.Skip(((int)pageIndex -1)*15).Take(15).ToList();
+                List<ParkingLot> partialParkingLots = parkingLots.Skip(((int)pageIndex - 1) * 15).Take(15).ToList();
                 return Ok(partialParkingLots);
             }
+        }
+
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<ParkingLot>> GetByIdAsync(string Id)
+        {
+            var parkingLot = await _parkingLotsService.GetParkingLotByIdAsync(Id);
+            if (parkingLot == null)
+            {
+                return NotFound();
+            }
+            return Ok(parkingLot);
         }
     }
 }
